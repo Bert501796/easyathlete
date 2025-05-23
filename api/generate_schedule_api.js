@@ -7,6 +7,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Only POST requests are allowed' });
   }
 
+  if (!process.env.OPENAI_API_KEY) {
+    return res.status(500).json({ error: 'Missing OpenAI API key' });
+  }
+
   const { onboarding, activities } = req.body;
 
   if (!onboarding || !onboarding.goal || !onboarding.level || !onboarding.daysPerWeek || !onboarding.sports) {
@@ -53,5 +57,4 @@ Avoid any extra commentary or explanation.
     console.error('AI schedule generation failed:', err);
     return res.status(500).json({ error: 'Failed to generate training schedule' });
   }
-
 }

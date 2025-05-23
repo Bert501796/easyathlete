@@ -53,6 +53,5 @@ Avoid any extra commentary or explanation.
     console.error('AI schedule generation failed:', err);
     return res.status(500).json({ error: 'Failed to generate training schedule' });
   }
-  console.log('🔑 OPENAI KEY FOUND:', process.env.OPENAI_API_KEY);
 
 }

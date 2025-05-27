@@ -179,16 +179,22 @@ export default function OnboardingChatbot({ onComplete, onboardingData }) {
                 <button
                   className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md"
                   onClick={() => {
-                    const clientId = '161074';
-                    const redirectUri = 'https://pacepilot-bert501796-bele-business-projects.vercel.app/StravaRedirect';
-                    const scope = 'read,activity:read_all';
-                    const authUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&approval_prompt=auto&scope=${scope}`;
-                    window.location.href = authUrl;
-                  }}
-                >
-                  Connect with Strava
-                </button>
-              </div>
+        const clientId = '161074';
+        const redirectUri =
+          window.location.hostname === 'localhost'
+            ? 'http://localhost:5173/strava-redirect'
+            : 'https://pacepilot-bert501796-bele-business-projects.vercel.app/strava-redirect';
+
+        const scope = 'read,activity:read_all';
+        const authUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(
+          redirectUri
+        )}&approval_prompt=auto&scope=${scope}`;
+        window.location.href = authUrl;
+      }}
+    >
+      Connect with Strava
+    </button>
+  </div>
             )}
           </div>
         ))}

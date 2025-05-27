@@ -25,19 +25,14 @@ const StravaRedirect = ({ onDataLoaded }) => {
 
     const exchangeToken = async () => {
       try {
-        const res = await fetch('https://www.strava.com/oauth/token', {
+        const res = await fetch('/api/strava-auth/exchange', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            client_id: '161074',
-            client_secret: '32400b4d162b5d45b29e6f675ce50b223e3b3ba8',
-            code,
-            grant_type: 'authorization_code',
-          }),
+          body: JSON.stringify({ code }),
         });
 
         const data = await res.json();
-        console.log('⚠️ Token Exchange Response:', data);
+        console.log('⚠️ Token Exchange Response (via backend):', data);
 
         if (res.ok && data.access_token) {
           window.history.replaceState({}, document.title, '/strava-redirect');
@@ -57,24 +52,36 @@ const StravaRedirect = ({ onDataLoaded }) => {
               oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
               while (moreData) {
-                const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?page=${page}&per_page=${perPage}`, {
-                  headers: { Authorization: `Bearer ${accessToken}` },
-                });
+                const res = await fetch(
+                  `https://www.strava.com/api/v3/athlete/activities?page=${page}&per_page=${perPage}`,
+                  {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                  }
+                );
 
                 const data = await res.json();
                 if (!Array.isArray(data) || data.length === 0) {
                   moreData = false;
                 } else {
-                  const filtered = data.filter(act => new Date(act.start_date) > oneYearAgo);
+                  const filtered = data.filter(
+                    (act) => new Date(act.start_date) > oneYearAgo
+                  );
                   allActivities = allActivities.concat(filtered);
-                  if (data.length < perPage) moreData = false;
-                  else page++;
+                  moreData = data.length === perPage;
+                  page++;
                 }
               }
 
               setActivities(allActivities);
-              localStorage.setItem('strava_activities', JSON.stringify(allActivities));
-              localStorage.setItem('onboarding_data', localStorage.getItem('onboarding_data') || JSON.stringify({ placeholder: true }));
+              localStorage.setItem(
+                'strava_activities',
+                JSON.stringify(allActivities)
+              );
+              localStorage.setItem(
+                'onboarding_data',
+                localStorage.getItem('onboarding_data') ||
+                  JSON.stringify({ placeholder: true })
+              );
               onDataLoaded(allActivities);
             } catch (err) {
               console.error('Failed to fetch activities:', err);

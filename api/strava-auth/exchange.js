@@ -1,9 +1,8 @@
-// backend/api/strava-auth.js
-import express from 'express';
-import fetch from 'node-fetch';
-const router = express.Router();
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
 
-router.post('/exchange', async (req, res) => {
   const { code } = req.body;
 
   try {
@@ -20,9 +19,8 @@ router.post('/exchange', async (req, res) => {
 
     const data = await response.json();
     res.status(200).json(data);
-  } catch (err) {
+  } catch (error) {
+    console.error('Strava token exchange error:', error);
     res.status(500).json({ error: 'Failed to exchange token with Strava' });
   }
-});
-
-export default router;
+}

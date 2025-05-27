@@ -86,9 +86,10 @@ export default function AppFlow() {
     return <OnboardingChatbot onComplete={handleOnboardingComplete} onboardingData={onboardingData} />;
   }
 
-  if (!stravaData && location.pathname === '/strava-redirect') {
-    return <StravaRedirect onDataLoaded={handleStravaData} />;
-  }
+if (location.pathname === '/strava-redirect') {
+  return <StravaRedirect onDataLoaded={handleStravaData} />;
+}
+
 
   if (!stravaData) {
     return (

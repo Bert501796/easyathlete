@@ -91,13 +91,13 @@ if (location.pathname === '/strava-redirect') {
 }
 
 
-  if (!stravaData) {
-    return (
-      <div className="p-6 text-center">
-        <p>⚠️ Strava data not found. Please reconnect your account.</p>
-      </div>
-    );
-  }
+  // if (!stravaData) {
+  //   return (
+  //     <div className="p-6 text-center">
+  //       <p>⚠️ Strava data not found. Please reconnect your account.</p>
+  //     </div>
+  //   );
+  // }
 
   if (!hasPaid) {
     return (
@@ -112,5 +112,5 @@ if (location.pathname === '/strava-redirect') {
     );
   }
 
-  return <TrainingSchedule onboarding={onboardingData} activities={stravaData} />;
+return <TrainingSchedule onboarding={onboardingData} activities={stravaData || []} />;
 }

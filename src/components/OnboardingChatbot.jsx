@@ -24,12 +24,13 @@ const messagesFlow = [
     role: 'bot',
     text: "Which sports should be included in your schedule?",
     sportSelect: true,
-  },
-  {
-    role: 'bot',
-    text: "Great! Let’s connect your Strava account to personalize your plan.",
-    stravaConnect: true,
-  },
+  }
+  // ,
+  // {
+  //   role: 'bot',
+  //   text: "Great! Let’s connect your Strava account to personalize your plan.",
+  //   stravaConnect: true,
+  // },
 ];
 
 export default function OnboardingChatbot({ onComplete, onboardingData }) {
